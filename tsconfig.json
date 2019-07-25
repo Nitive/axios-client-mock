@@ -1,0 +1,11 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "declaration": true,
+    "outDir": "dist",
+    "lib": ["dom", "es2015", "es2015.promise", "es2016.array.include"],
+    "moduleResolution": "node",
+    "strict": true,
+    "target": "es2018"
+  }
+}
