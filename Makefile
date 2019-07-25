@@ -16,5 +16,5 @@ build:
 	yarn tsc --project .
 
 .PHONY: publish
-publish:
+publish: build
 	yarn np
