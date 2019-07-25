@@ -7,7 +7,7 @@
   "author": "Maxim Samoilov <nitive@icloud.com>",
   "license": "MIT",
   "scripts": {
-    "test": "yarn jest --coverage"
+    "test": "make ci"
   },
   "publishConfig": {
     "access": "public"
