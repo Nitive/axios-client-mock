@@ -6,6 +6,9 @@
   "repository": "git@github.com:Nitive/axios-client-mock.git",
   "author": "Maxim Samoilov <nitive@icloud.com>",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "axios": ">=0.18.0"
   },
@@ -13,6 +16,7 @@
     "@types/jest": "^24.0.15",
     "@types/node": "^12.6.8",
     "jest": "^24.8.0",
+    "np": "^5.0.3",
     "prettier": "^1.18.2",
     "ts-jest": "^24.0.2",
     "typescript": "^3.5.3"

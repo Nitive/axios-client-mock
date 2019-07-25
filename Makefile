@@ -14,3 +14,7 @@ prettier:
 build:
 	rm -rf dist
 	yarn tsc --project .
+
+.PHONY: publish
+publish:
+	yarn np
