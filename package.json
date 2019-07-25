@@ -6,6 +6,9 @@
   "repository": "git@github.com:Nitive/axios-client-mock.git",
   "author": "Maxim Samoilov <nitive@icloud.com>",
   "license": "MIT",
+  "scripts": {
+    "test": "yarn jest --coverage"
+  },
   "publishConfig": {
     "access": "public"
   },
