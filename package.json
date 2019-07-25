@@ -5,5 +5,8 @@
   "typings": "dist/src/index.d.ts",
   "repository": "git@github.com:Nitive/axios-client-mock.git",
   "author": "Maxim Samoilov <nitive@icloud.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "axios": ">=0.18.0"
+  }
 }
