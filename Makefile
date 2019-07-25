@@ -2,6 +2,7 @@
 test:
 	yarn jest
 
+.PHONY: ci
 ci:
 	yarn prettier --check '**/*.{ts,js,json}'
 	make coverage

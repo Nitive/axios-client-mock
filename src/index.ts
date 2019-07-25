@@ -1,6 +1,11 @@
 // @ts-ignore (no typings in axios)
 import * as settle from 'axios/lib/core/settle'
-import axios, { AxiosRequestConfig, AxiosResponse, AxiosInstance, AxiosAdapter } from 'axios'
+import axios, {
+  AxiosRequestConfig,
+  AxiosResponse,
+  AxiosInstance,
+  AxiosAdapter,
+} from 'axios'
 
 function nextTick() {
   return new Promise(resolve => setTimeout(resolve))
@@ -42,7 +47,10 @@ function getHttpClientCreationStackTrace(): string | undefined {
 }
 
 function createErrorMessage(url: string, position: string | undefined) {
-  return [`Call to ${url} is unmocked. Mock it with client.mock('${url}', ...)`, position]
+  return [
+    `Call to ${url} is unmocked. Mock it with client.mock('${url}', ...)`,
+    position,
+  ]
     .filter(Boolean)
     .join('\n')
 }
@@ -94,13 +102,16 @@ function createAxiosClientMock(axiosConfig?: AxiosRequestConfig): MockClient {
     await nextTick()
   }
 
-  const client: MockClient = Object.assign(axios.create({ ...axiosConfig, adapter }), {
-    mock(endpoint: Endpoint) {
-      endpoints.unshift(endpoint)
-      return client
-    },
-    waitForPendingRequests,
-  })
+  const client: MockClient = Object.assign(
+    axios.create({ ...axiosConfig, adapter }),
+    {
+      mock(endpoint: Endpoint) {
+        endpoints.unshift(endpoint)
+        return client
+      },
+      waitForPendingRequests,
+    }
+  )
 
   return client
 }
