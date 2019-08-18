@@ -12,7 +12,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         version: 10.x
-    - name: npm install and test
-      run: |
-        npm install
-        npm test
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+
+    - name: Run tests
+      run: yarn test
