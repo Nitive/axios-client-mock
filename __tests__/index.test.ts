@@ -281,4 +281,76 @@ describe('Мок HTTP клиента', () => {
     await client.waitForPendingRequests()
     expect(test).toHaveBeenCalledTimes(1)
   })
+
+  it('должен позволять добавить функцию для фильтрации запросов', async () => {
+    const client = axiosMock
+      .create()
+      .mock({
+        url: '/api/data',
+        filter: ({ params }) => params.type === 'one',
+        response() {
+          return {
+            status: 200,
+            data: 'one',
+          }
+        },
+      })
+      .mock({
+        url: '/api/data',
+        filter: ({ params }) => params.type === 'two',
+        response() {
+          return {
+            status: 200,
+            data: 'two',
+          }
+        },
+      })
+
+    const one = await client.get('/api/data', { params: { type: 'one' } })
+    expect(one.data).toBe('one')
+
+    const two = await client.get('/api/data', { params: { type: 'two' } })
+    expect(two.data).toBe('two')
+
+    const consoleWarn = jest.spyOn(console, 'warn').mockImplementation(() => {})
+    const nothingP = client.get('/api/data', { params: { type: 'three' } })
+    await expect(nothingP).rejects.toThrow()
+    consoleWarn.mockRestore()
+  })
+
+  it('должен поддерживать фильтрацию по data', async () => {
+    const client = axiosMock
+      .create()
+      .mock({
+        url: '/api/data',
+        filter: ({ data }) => data.type === 'one',
+        response() {
+          return {
+            status: 200,
+            data: 'one',
+          }
+        },
+      })
+      .mock({
+        url: '/api/data',
+        filter: ({ data }) => data.type === 'two',
+        response() {
+          return {
+            status: 200,
+            data: 'two',
+          }
+        },
+      })
+
+    const one = await client.post('/api/data', { type: 'one' })
+    expect(one.data).toBe('one')
+
+    const two = await client.post('/api/data', { type: 'two' })
+    expect(two.data).toBe('two')
+
+    const consoleWarn = jest.spyOn(console, 'warn').mockImplementation(() => {})
+    const nothingP = client.post('/api/data', { type: 'three' })
+    await expect(nothingP).rejects.toThrow()
+    consoleWarn.mockRestore()
+  })
 })
