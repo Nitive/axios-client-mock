@@ -13,7 +13,7 @@
     "access": "public"
   },
   "files": [
-    "src/dist"
+    "dist/src"
   ],
   "dependencies": {
     "axios": ">=0.18.0"
