@@ -11,8 +11,8 @@ function nextTick() {
   return new Promise(resolve => setTimeout(resolve))
 }
 
-export interface ClientResponse {
-  data: any
+export interface ClientResponse<T = any> {
+  data: T
   status: number
   statusText?: string
   headers?: any
@@ -22,9 +22,10 @@ export interface ClientResponse {
 
 type HTTPMethod = 'get' | 'delete' | 'head' | 'post' | 'put' | 'patch'
 
-export interface Endpoint {
+export interface Endpoint<T = any> {
   url: string
-  response(config: { data: any; headers: any }): ClientResponse
+  filter?: (config: AxiosRequestConfig) => boolean
+  response(config: { data: any; headers: any }): ClientResponse<T>
   method?: HTTPMethod
   headers?: any
 }
@@ -65,11 +66,17 @@ function createAxiosClientMock(axiosConfig?: AxiosRequestConfig): MockClient {
     }
 
     const url = config.url.replace(config.baseURL || '', '')
+    
+    const requestData = {
+      params: config.params,
+      data: config.data && JSON.parse(config.data),
+    }
 
     const endpoint = endpoints.find(endp => {
-      const urlMatched = endp.url === url
-      const methodMatched = !endp.method || endp.method === config.method
-      return urlMatched && methodMatched
+      const urlMatches = endp.url === url
+      const methodMatches = !endp.method || endp.method === config.method
+      const doesGuardMatch = () => !endp.filter || endp.filter(requestData)
+      return urlMatches && methodMatches && doesGuardMatch()
     })
 
     if (!endpoint) {
@@ -79,7 +86,7 @@ function createAxiosClientMock(axiosConfig?: AxiosRequestConfig): MockClient {
     }
 
     const request = {
-      data: config.data && JSON.parse(config.data),
+      ...requestData,
       headers: { ...config.headers, ...endpoint.headers },
     }
 
