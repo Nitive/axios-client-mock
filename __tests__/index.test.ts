@@ -354,4 +354,29 @@ describe('Мок HTTP клиента', () => {
     consoleWarn.mockRestore()
   })
   
+  it('должен позволять передавать любые данные', async () => {
+    const file = new File(['id номер адрес время'], 'object.csv', { type: 'text/csv' });
+    const dataWithFile = new FormData();
+    dataWithFile.append('file', file);
+
+    const client = axiosMock.create().mock({
+      url: '/api/v1/data',
+      method: 'post',
+      response() {
+        return {
+          status: 200,
+          data : 'good',
+          headers: {
+            'Content-Type': 'mulipart/form-data',
+          },
+        }
+      },
+    })
+
+    const result = await client.post('/api/v1/data', dataWithFile, {
+      headers: {
+        'Content-Type': 'mulipart/form-data',
+      },})
+    expect(result.data).toBe('good')
+  })
 })
