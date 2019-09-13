@@ -56,6 +56,17 @@ function createErrorMessage(url: string, position: string | undefined) {
     .join('\n')
 }
 
+function parseData(data: any) {
+  if (typeof data === 'string') {
+    try {
+      data = JSON.parse(data)
+    } catch (e) {
+      /* Ignore */
+    }
+  }
+  return data
+}
+
 function createAxiosClientMock(axiosConfig?: AxiosRequestConfig): MockClient {
   const endpoints: Endpoint[] = []
   const position = getHttpClientCreationStackTrace()
@@ -69,7 +80,7 @@ function createAxiosClientMock(axiosConfig?: AxiosRequestConfig): MockClient {
 
     const requestData = {
       params: config.params,
-      data: config.data && JSON.parse(config.data),
+      data: config.data && parseData(config.data),
     }
 
     const endpoint = endpoints.find(endp => {
